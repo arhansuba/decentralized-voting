@@ -1,0 +1,26 @@
+[
+    {
+      "function": "registerCandidate",
+      "inputs": ["Alice"]
+    },
+    {
+      "function": "registerCandidate",
+      "inputs": ["Bob"]
+    },
+    {
+      "function": "vote",
+      "inputs": ["voter1", "candidate_1"]
+    },
+    {
+      "function": "vote",
+      "inputs": ["voter2", "candidate_2"]
+    },
+    {
+      "function": "vote",
+      "inputs": ["voter3", "candidate_1"]
+    },
+    {
+      "function": "getResults",
+      "inputs": []
+    }
+  ]
