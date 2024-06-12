@@ -1,0 +1,27 @@
+/* App.css */
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.proposal-input {
+  margin: 20px 0;
+}
+
+.proposal-input input {
+  padding: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.proposal-input button {
+  padding: 10px 20px;
+  font-size: 16px;
+}

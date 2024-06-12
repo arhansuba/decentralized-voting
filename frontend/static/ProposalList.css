@@ -1,0 +1,16 @@
+/* ProposalList.css */
+
+.proposal-list {
+    margin-top: 20px;
+  }
+  
+  .proposal-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .proposal-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
