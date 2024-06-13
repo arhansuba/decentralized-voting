@@ -24,6 +24,33 @@ import {
   validateAndCreateJsonString,
 } from '@versatus/versatus-javascript'
 import { IComputeInputs } from '@versatus/versatus-javascript'
+import { VotingProgram } from './src/voting-system'
+// src/example-program.ts
+//import {VotingProgram} from 'backend/src/voting-system';
+
+
+// Initialize VotingProgram with a program balance of 1,000,000 VOTE tokens
+const votingProgram = new VotingProgram(1000000);
+
+// Example function to register a user and allocate tokens
+function registerUser(userAddress: string) {
+  const computeInputs = {
+    transaction: {
+      from: userAddress
+    }
+  };
+
+  try {
+    const outputs = votingProgram.register(computeInputs);
+    console.log('User registered successfully:', outputs);
+  } catch (error) {
+    console.error('Error registering user:', error);
+  }
+}
+
+// Example usage:
+const userAddress = '0x1234567890abcdef'; // Replace with actual user address
+registerUser(userAddress);
 
 class FungibleTokenProgram extends Program {
   constructor() {
