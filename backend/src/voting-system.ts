@@ -1,5 +1,3 @@
-// src/voting-system.ts
-
 import {
   Program,
   IComputeInputs,
@@ -27,7 +25,7 @@ export class VotingProgram extends Program {
   register(computeInputs: IComputeInputs) {
     try {
       const { transaction } = computeInputs;
-      const { from } = transaction;
+      const { from, to } = transaction;
 
       // Allocate tokens to the voter upon registration
       const voterTokens = 1000; // Example: Each voter gets 1000 tokens upon registration
@@ -37,7 +35,7 @@ export class VotingProgram extends Program {
 
       // Validate and retrieve current token data
       const currProgramInfo = validate(
-        computeInputs.accountInfo?.programs[transaction.to],
+        computeInputs.accountInfo?.programs[to],
         'Token information not found.'
       );
 
@@ -65,7 +63,7 @@ export class VotingProgram extends Program {
       const updateTokenField = buildTokenUpdateField({
         field: 'data',
         value: updatedTokenDataStr,
-        action: 'extend'
+        action: 'extend' as const // Use 'extend', 'insert', or 'remove' here
       });
 
       // Build token update instruction
@@ -73,7 +71,7 @@ export class VotingProgram extends Program {
         update: new TokenOrProgramUpdate(
           'tokenUpdate',
           new TokenUpdate(
-            new AddressOrNamespace(transaction.to), // Program's address
+            new AddressOrNamespace(to), // Program's address
             new AddressOrNamespace(THIS), // This program's address
             [updateTokenField]
           )
@@ -82,9 +80,9 @@ export class VotingProgram extends Program {
 
       // Transfer tokens to the caller (optional, depending on your implementation)
       const transferToCaller = buildTransferInstruction({
-        from: THIS, // Transfer from the program's account
+        from: THIS.toString(), // Transfer from the program's account (convert THIS to string)
         to: from, // Transfer to the caller (registered user)
-        tokenAddress: transaction.to, // Token address (assuming it's the same as the program's address)
+        tokenAddress: to, // Token address (assuming it's the same as the program's address)
         tokenIds: [] // Assuming no specific tokens are transferred
       });
 
@@ -132,8 +130,8 @@ export class VotingProgram extends Program {
             new AddressOrNamespace(from), // User's address
             new AddressOrNamespace(THIS), // Program's address
             [
-              buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' }),
-              buildTokenUpdateField({ field: 'data', value: JSON.stringify(userData), action: 'overwrite' }) // Update user's token balance
+              buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' as const }), // Corrected the action type
+              buildTokenUpdateField({ field: 'data', value: JSON.stringify(userData), action: 'extend' as const }) // Corrected the action type
             ]
           )
         )
@@ -188,8 +186,8 @@ export class VotingProgram extends Program {
             new AddressOrNamespace(from), // User's address
             new AddressOrNamespace(THIS), // Program's address
             [
-              buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' }),
-              buildTokenUpdateField({ field: 'data', value: JSON.stringify(userData), action: 'overwrite' }) // Update user's token balance
+              buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' as const }), // Corrected the action type
+              buildTokenUpdateField({ field: 'data', value: JSON.stringify(userData), action: 'extend' as const }) // Corrected the action type
             ]
           )
         )
@@ -226,9 +224,9 @@ export class VotingProgram extends Program {
         update: new TokenOrProgramUpdate(
           'tokenUpdate',
           new TokenUpdate(
-            new AddressOrNamespace(THIS),
-            new AddressOrNamespace(THIS),
-            [buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' })]
+            new AddressOrNamespace(THIS), // Program's address
+            new AddressOrNamespace(THIS), // Program's address
+            [buildTokenUpdateField({ field: 'data', value: dataStr, action: 'extend' as const })]
           )
         )
       });
